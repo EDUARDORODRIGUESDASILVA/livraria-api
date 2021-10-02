@@ -3,7 +3,8 @@ import express from 'express';
 import winston from 'winston';
 import sync from './repositories/db.sync.js';
 
-import { handleError } from './util/error.handler.js';
+import clientesRouter from './routes/clientes.routes.js'
+import {handleError}  from './util/error.handler.js';
 
 const app = express();
 
@@ -29,18 +30,37 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use(sync);
-// app.use('/proprietario', proprietariosRouter);
+app.get('/', (req, res) => {
+  res.send('Bootcamp IGTI: Desenvolvedor Node JS - Desafio Final. Bem vindo à livraria-api.');
+});
+
+app.use('/cliente', clientesRouter);
 // app.use('/animal', animaisRouter);
 // app.use('/servico', servicosRouter);
 // app.use('/post', postsRouter);
 // app.use('/comentario', comentariosRouter);
 
-app.get('/', (req, res) => {
-  res.send('Bootcamp IGTI: Desenvolvedor Node JS - Desafio Final. Bem vindo à livraria-api.');
-});
+// app.use((err, req, res, next) => {
+//  console.log('eror 2')
+//  const { statusCode, message } = err; 
+//  global.logger.error({ statusCode, message });
+//   res.status(statusCode).json({
+//     status: 'error',
+//     statusCode,
+//     message,
+//   }); 
+//  //x res.status(500).send("Ocorreu um erro, tente novamente mais tarde.");
+// });
 
-app.use((err, req, res) => {
-  handleError(err, res);
+app.use(handleError);
+
+app.use((err, req, res, next) => { 
+  res.status(500).json({
+    status: 'error',
+    statusCode: 500,
+    message: "Ocorreu um erro, tente novamente mais tarde."
+  }); 
+  global.logger.error({ erro: JSON.stringify(err) });  
 });
 
 app.listen(3000, () => {
