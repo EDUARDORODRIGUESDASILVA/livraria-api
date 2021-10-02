@@ -1,5 +1,5 @@
-import { Sequelize } from 'sequelize';
-import db from '../repositories/db';
+import { Sequelize } from 'sequelize'
+import db from '../repositories/db.js'
 
 const Autor = db.define(
   'autores',
@@ -8,32 +8,24 @@ const Autor = db.define(
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     nome: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     telefone: {
       type: Sequelize.STRING,
-      allowNull: false,
-    },
-    estoque: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    autorID: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
-  { underscored: true },
-);
+  { underscored: true }
+)
 // Animal.belongsTo(Proprietario, { foreignKey: 'proprietario_id' });
 // Animal.hasOne(Proprietario);
 
-export default Autor;
+export default Autor

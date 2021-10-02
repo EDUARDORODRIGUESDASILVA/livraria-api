@@ -1,8 +1,7 @@
-import { ErrorHandler } from '../util/error.handler.js'
 import { check, validationResult } from 'express-validator'
-import clientService from '../services/cliente.service.js'
+import autorService from '../services/autor.service.js'
 
-async function createCliente (req, res, next) {
+async function createAutor (req, res, next) {
   try {
     await check('nome', 'Nome deve ser informado').notEmpty().run(req)
     await check('email',
@@ -10,9 +9,7 @@ async function createCliente (req, res, next) {
     await check('email',
       'email deve ter um endereço válido').isEmail().run(req)
 
-    await check('senha', 'senha deve ser informada').notEmpty().run(req)
     await check('telefone', 'telefone deve ser informado').notEmpty().run(req)
-    await check('endereco', 'endereço deve ser informado').notEmpty().run(req)
 
     const result = validationResult(req)
 
@@ -21,27 +18,23 @@ async function createCliente (req, res, next) {
       return
     }
 
-    const c = await clientService.createCliente(req.body)
+    const c = await autorService.createAutor(req.body)
     return res.status(201).json(c)
-
-    // throw new ErrorHandler(501, 'Endpoint not implemented');
   } catch (error) {
     next(error)
   }
 }
 
-async function updateCliente (req, res, next) {
+async function updateAutor (req, res, next) {
   try {
-    await check('clienteId', 'o clienteid deve ser informado').notEmpty().run(req)
+    await check('autorId', 'o autorId deve ser informado').notEmpty().run(req)
     await check('nome', 'Nome deve ser informado').notEmpty().run(req)
     await check('email',
       'email deve ser informado').notEmpty().run(req)
     await check('email',
       'email deve ter um endereço válido').isEmail().run(req)
 
-    //  await check('senha', 'senha deve ser informada').notEmpty().run(req);
     await check('telefone', 'telefone deve ser informado').notEmpty().run(req)
-    await check('endereco', 'endereço deve ser informado').notEmpty().run(req)
 
     const result = validationResult(req)
 
@@ -50,7 +43,7 @@ async function updateCliente (req, res, next) {
       return
     }
 
-    const c = await clientService.updateCliente(req.body)
+    const c = await autorService.updateAutor(req.body)
     return res.status(200).json(c)
 
     // throw new ErrorHandler(501, 'Endpoint not implemented');
@@ -59,51 +52,35 @@ async function updateCliente (req, res, next) {
   }
 }
 
-async function deleteCliente (req, res, next) {
+async function deleteAutor (req, res, next) {
   try {
     const id = parseInt(req.params.id)
-
-    if (!id) {
-      throw new ErrorHandler(400, 'Missing required id')
-    }
-
-    const c = await clientService.deleteCliente(id)
-    return res.status(200).send(c)
-    // throw new ErrorHandler(501, 'Endpoint not implemented')
-  } catch (error) {
-    next(error)
-  }
-}
-
-async function getClientes (req, res, next) {
-  try {
-    const c = await clientService.getClientes()
+    const c = await autorService.deleteAutor(id)
     return res.status(200).send(c)
   } catch (error) {
     next(error)
   }
 }
 
-async function getClientByClientId (req, res, next) {
+async function getAutores (req, res, next) {
   try {
-    const clientId = parseInt(req.params.id)
-
-    if (!clientId) {
-      throw new ErrorHandler(400, 'Missing required clientId')
-    }
-
-    const c = await clientService.getClienteByClienteId(clientId)
+    const c = await autorService.getAutores()
     return res.status(200).send(c)
-    // throw new ErrorHandler(501, 'Endpoint not implemented')
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function getAutorByAutorId (req, res, next) {
+  try {
+    const autorId = parseInt(req.params.id)
+    const c = await autorService.getAutorByAutorId(autorId)
+    return res.status(200).send(c)
   } catch (error) {
     next(error)
   }
 }
 
 export default {
-  createCliente,
-  updateCliente,
-  deleteCliente,
-  getClientes,
-  getClientByClientId
+  createAutor, updateAutor, deleteAutor, getAutores, getAutorByAutorId
 }
