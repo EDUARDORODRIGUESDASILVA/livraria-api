@@ -1,15 +1,15 @@
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+import { Sequelize } from 'sequelize'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING,
   {
     dialect: 'postgres',
     define: {
-      timestamps: false,
+      timestamps: false
     },
-    logging: (msg) => global.logger.debug(msg),
-  });
+    logging: (msg) => global.logger.debug(msg)
+  })
 
-export default sequelize;
+export default sequelize

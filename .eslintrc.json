@@ -1,11 +1,11 @@
 {
     "env": {
         "es2021": true,
-        "node": true,
-        "plugins": ["jest"]
+        "node": true,   
+        "jest": true
     },
     "extends": [
-        "airbnb-base"
+        "standard"
     ],
     "plugins": ["jest"],
     "parserOptions": {
@@ -13,5 +13,5 @@
         "sourceType": "module"
     },
     "rules": {
-    }
+    }    
 }

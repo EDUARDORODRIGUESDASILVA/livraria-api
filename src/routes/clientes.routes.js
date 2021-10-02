@@ -1,14 +1,11 @@
-/* eslint-disable new-cap */
-import {Router} from 'express';
-import clientesController from '../controllers/clientes.controller.js';
+import { Router } from 'express'
+import clientesController from '../controllers/clientes.controller.js'
 
-const router = Router();
+const router = Router()
 
-router.post('/',  clientesController.createCliente);
-router.put('/', clientesController.updateCliente);
-// router.get('/', produtosController.listProducts);
-// router.get('/:codigo', produtosController.listProductByCodigo);
-
-// router.delete('/', produtosController.deleteProductByCodigo);
-
-export default router;
+router.post('/', clientesController.createCliente)
+router.put('/', clientesController.updateCliente)
+router.delete('/:id', clientesController.deleteCliente)
+router.get('/', clientesController.getClientes)
+router.get('/:id', clientesController.getClientByClientId)
+export default router
