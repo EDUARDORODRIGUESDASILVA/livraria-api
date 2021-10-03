@@ -61,27 +61,6 @@ async function createAvaliacao (livroId, avaliacao) {
   }
 }
 
-async function deleteAvaliacao (livroId, index) {
-  try {
-    await client.connect()
-
-    const database = client.db('livraria')
-    const id = { livroId }
-    const livroInfo = await database.collection('livroInfo').findOne(id)
-
-    if (!livroInfo.avaliacoes) {
-      livroInfo.avaliacoes = []
-    }
-    livroInfo.avaliacoes.splice(index, 1)
-    await database.collection('livroInfo').updateOne(id, {
-      $set: { avaliacoes: livroInfo.avaliacoes }
-    })
-    return livroInfo
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close()
-  }
-}
 async function updateLivroInfo (info) {
   try {
     await client.connect()
@@ -125,11 +104,59 @@ async function deleteLivroInfo (livroId) {
     await client.close()
   }
 }
+
+async function createLivroAvaliacao (livroId, avaliacao) {
+  try {
+    await client.connect()
+
+    const database = client.db('livraria')
+    const id = { livroId: livroId }
+
+    let livroInfo = await database.collection('livroInfo').findOne(id)
+    const avaliacoes = await livroInfo.avaliacoes
+    avaliacoes.push(avaliacao)
+
+    await database.collection('livroInfo').updateOne(id, {
+      $set: { avaliacoes: avaliacoes }
+    })
+
+    livroInfo = await database.collection('livroInfo').findOne(id)
+    return livroInfo
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close()
+  }
+}
+
+async function deleteLivroAvaliacao (livroId, index) {
+  try {
+    await client.connect()
+
+    const database = client.db('livraria')
+    const id = { livroId: livroId }
+
+    let livroInfo = await database.collection('livroInfo').findOne(id)
+    const avaliacoes = await livroInfo.avaliacoes
+    avaliacoes.splice(index, 1)
+
+    await database.collection('livroInfo').updateOne(id, {
+      $set: { avaliacoes: avaliacoes }
+    })
+
+    livroInfo = await database.collection('livroInfo').findOne(id)
+    return livroInfo
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close()
+  }
+}
+
 export default {
   createLivroInfo,
   getLivroInfoByLivroId,
   deleteLivroInfo,
   createAvaliacao,
   updateLivroInfo,
-  deleteAvaliacao
+  createLivroAvaliacao,
+  deleteLivroAvaliacao
 }

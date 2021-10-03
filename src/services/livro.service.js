@@ -17,7 +17,13 @@ async function getLivros () {
 }
 
 async function getLivroByLivroId (livroId) {
-  return await livroRepository.getLivroByLivroId(livroId)
+  const c = await livroRepository.getLivroByLivroId(livroId)
+  const cParsed = JSON.parse(JSON.stringify(c))
+  if (cParsed) {
+    const livroInfo = await livroInfoRepository.getLivroInfoByLivroId(livroId)
+    cParsed.info = livroInfo
+  }
+  return cParsed
 }
 
 async function getLivrosByAutorId (autorId) {
@@ -32,9 +38,18 @@ async function updateLivroInfo (livroInfo) {
   return await livroInfoRepository.updateLivroInfo(livroInfo)
 }
 
-async function deleteLivroInfo (livroId, index) {
-  return await livroInfoRepository.deleteLivroInfo(livroId, index)
+async function deleteLivroInfo (livroId) {
+  return await livroInfoRepository.deleteLivroInfo(livroId)
 }
+
+async function createLivroAvaliacao (livroId, avaliacao) {
+  return await livroInfoRepository.createLivroAvaliacao(livroId, avaliacao)
+}
+
+async function deleteLivroAvaliacao (livroId, index) {
+  return await livroInfoRepository.deleteLivroAvaliacao(livroId, index)
+}
+
 export default {
   createLivro,
   updateLivro,
@@ -44,5 +59,7 @@ export default {
   getLivrosByAutorId,
   createLivroInfo,
   updateLivroInfo,
-  deleteLivroInfo
+  deleteLivroInfo,
+  createLivroAvaliacao,
+  deleteLivroAvaliacao
 }

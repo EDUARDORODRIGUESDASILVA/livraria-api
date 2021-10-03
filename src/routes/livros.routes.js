@@ -13,4 +13,7 @@ router.post('/info', livrosController.createLivroInfo)
 router.put('/info', livrosController.updateLivroInfo)
 router.delete('/info/:id/', livrosController.deleteLivroInfo)
 
+router.post('/:id/avaliacao', livrosController.createLivroAvaliacao)
+router.delete('/:id/avaliacao/:index', livrosController.deleteLivroAvaliacao)
+
 export default router

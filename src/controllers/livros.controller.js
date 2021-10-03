@@ -85,7 +85,6 @@ async function getLivroByLivroId (req, res, next) {
   try {
     const livroId = parseInt(req.params.id)
 
-    // TODO RETORNAR AS INFORMAÇÕES DO MONGO DB AQUI
     const c = await livroService.getLivroByLivroId(livroId)
     return res.status(200).send(c)
   } catch (error) {
@@ -159,6 +158,42 @@ async function deleteLivroInfo (req, res, next) {
     next(error)
   }
 }
+
+async function createLivroAvaliacao (req, res, next) {
+  try {
+    const id = parseInt(req.params.id)
+
+    await check('nome', 'Nome deve ser informado').notEmpty().run(req)
+    await check('nota', 'nota deve ser informada').notEmpty().run(req)
+    await check('nota', 'nota deve ser um número inteiro').isInt().notEmpty().run(req)
+    await check('avaliacao', 'avaliação deve ser informada').notEmpty().run(req)
+
+    const result = validationResult(req)
+
+    if (!result.isEmpty()) {
+      res.status(400).json({ erros: result.array() })
+      return
+    }
+
+    const c = await livroService.createLivroAvaliacao(id, req.body)
+    return res.status(201).send(c)
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function deleteLivroAvaliacao (req, res, next) {
+  try {
+    const livroId = parseInt(req.params.id)
+    const index = parseInt(req.params.index)
+
+    const c = await livroService.deleteLivroAvaliacao(livroId, index)
+    return res.status(200).send(c)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export default {
   createLivro,
   updateLivro,
@@ -167,5 +202,7 @@ export default {
   deleteLivroInfo,
   getLivroByLivroId,
   createLivroInfo,
-  updateLivroInfo
+  updateLivroInfo,
+  createLivroAvaliacao,
+  deleteLivroAvaliacao
 }

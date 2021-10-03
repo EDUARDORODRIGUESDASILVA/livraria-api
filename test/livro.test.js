@@ -88,7 +88,7 @@ describe('/livro', () => {
   })
 })
 
-describe('/livroInfo', () => {
+describe('/livro/info', () => {
   test('POST - Criar LivroInfo', async () => {
     const nome = 'Livro teste LivroInfo'
     const autorId = 5
@@ -195,4 +195,92 @@ describe('/livroInfo', () => {
     const res3 = await request.delete(`/livro/info/${livroId}`)
     expect(res3.status).toBe(200)
   })
+})
+
+describe('/livro/avaliacao', () => {
+  test('create livro review', async () => {
+    const payloadRequest1 = {
+      nome: 'Livro teste Livro Rewiew',
+      valor: 24.50,
+      autorId: 5,
+      estoque: 2
+    }
+    const res = await request.post('/livro')
+      .send(payloadRequest1)
+    expect(res.status).toBe(201)
+    const livroId = res.body.livroId
+
+    const payloadRequest2 = {
+      livroId,
+      descricao: 'Descrição do livro teste',
+      paginas: 42,
+      editora: 'Editora Teste'
+    }
+
+    const res2 = await request.post('/livro/info')
+      .send(payloadRequest2)
+    expect(res2.status).toBe(201)
+
+    const payloadRequest3 = {
+      nome: 'payload request3',
+      nota: 5,
+      avaliacao: 'teste'
+    }
+
+    const res3 = await request.post(`/livro/${livroId}/avaliacao`)
+      .send(payloadRequest3)
+    expect(res3.status).toBe(201)
+  })
+
+  // test('delete livro review', async () => {
+  //   const payloadRequest1 = {
+  //     nome: 'Livro teste Livro Rewiew',
+  //     valor: 24.50,
+  //     autorId: 5,
+  //     estoque: 2
+  //   }
+  //   const res = await request.post('/livro')
+  //     .send(payloadRequest1)
+  //   expect(res.status).toBe(201)
+  //   const livroId = res.body.livroId
+
+  //   const payloadRequest2 = {
+  //     livroId,
+  //     descricao: 'Descrição do livro teste',
+  //     paginas: 42,
+  //     editora: 'Editora Teste'
+  //   }
+
+  //   const res2 = await request.post('/livro/info')
+  //     .send(payloadRequest2)
+  //   expect(res2.status).toBe(201)
+
+  //   const payloadRequest3 = {
+  //     nome: 'payload request3',
+  //     nota: 5,
+  //     avaliacao: 'teste'
+  //   }
+
+  //   payloadRequest3.nome = 'payload x'
+  //   const res3 = await request.post(`/livro/${livroId}/avaliacao`)
+  //     .send(payloadRequest3)
+  //   expect(res3.status).toBe(201)
+
+  //   payloadRequest3.nome = 'payload y'
+  //   const res4 = await request.post(`/livro/${livroId}/avaliacao`)
+  //     .send(payloadRequest3)
+  //   expect(res4.status).toBe(201)
+
+  //   payloadRequest3.nome = 'payload z'
+  //   const res5 = await request.post(`/livro/${livroId}/avaliacao`)
+  //     .send(payloadRequest3)
+  //   expect(res5.status).toBe(201)
+
+  //   const index = 1
+  //   const res6 = await request.delete(`/livro/${livroId}/avaliacao/${index}`)
+  //   expect(res6.status).toBe(200)
+
+  //   const avaliacoes = res.body.avaliacoes
+  //   expect(avaliacoes.length).toBe(2)
+  // })
 })
