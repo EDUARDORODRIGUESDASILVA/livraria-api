@@ -87,14 +87,8 @@ async function getClientes (req, res, next) {
 async function getClientByClientId (req, res, next) {
   try {
     const clientId = parseInt(req.params.id)
-
-    if (!clientId) {
-      throw new ErrorHandler(400, 'Missing required clientId')
-    }
-
     const c = await clientService.getClienteByClienteId(clientId)
     return res.status(200).send(c)
-    // throw new ErrorHandler(501, 'Endpoint not implemented')
   } catch (error) {
     next(error)
   }

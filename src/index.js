@@ -4,6 +4,7 @@ import sync from './repositories/db.sync.js'
 
 import clientesRouter from './routes/clientes.routes.js'
 import autorRouter from './routes/autor.routes.js'
+import livrosRouter from './routes/livros.routes.js'
 
 import { handleError } from './util/error.handler.js'
 
@@ -33,7 +34,7 @@ app.get('/', (req, res) => {
 
 app.use('/cliente', clientesRouter)
 app.use('/autor', autorRouter)
-// app.use('/servico', servicosRouter);
+app.use('/livro', livrosRouter)
 // app.use('/post', postsRouter);
 // app.use('/comentario', comentariosRouter);
 

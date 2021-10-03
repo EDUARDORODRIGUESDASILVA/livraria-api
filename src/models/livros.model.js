@@ -1,6 +1,6 @@
-import { Sequelize } from 'sequelize';
-import db from '../repositories/db';
-import Autor from './autores.model';
+import { Sequelize } from 'sequelize'
+import db from '../repositories/db.js'
+import Autor from './autores.model.js'
 
 const Livro = db.define(
   'livros',
@@ -9,29 +9,29 @@ const Livro = db.define(
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     nome: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     valor: {
       type: Sequelize.FLOAT,
-      allowNull: false,
+      allowNull: false
     },
     estoque: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-    autorID: {
+    autorId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-    },
+      allowNull: true
+    }
   },
-  { underscored: true },
-);
+  { underscored: true }
+)
 
-Livro.belongsTo(Autor, { foreignKey: 'autor_id' });
-Livro.hasOne(Autor);
+Livro.belongsTo(Autor, { foreignKey: 'autor_id' })
+// Livro.hasOne(Autor)
 
-export default Livro;
+export default Livro
