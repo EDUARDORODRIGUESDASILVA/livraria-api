@@ -93,4 +93,79 @@ async function getLivroByLivroId (req, res, next) {
   }
 }
 
-export default { createLivro, updateLivro, deleteLivro, getLivros, getLivroByLivroId }
+async function createLivroInfo (req, res, next) {
+  try {
+    await check('livroId', 'Nome deve ser informado').notEmpty().run(req)
+    await check('livroId', 'livroId deve ser um número inteiro positivo.').isInt().notEmpty().run(req)
+
+    await check('descricao', 'Valor deve ser informado').notEmpty().run(req)
+    await check('paginas', 'O número de páginas de um número inteiro positivo.').notEmpty().run(req)
+    await check('paginas', 'Valor deve ser numérico').isInt().run(req)
+    await check('editora', 'editora deve ser informado').notEmpty().run(req)
+
+    const result = validationResult(req)
+
+    if (!result.isEmpty()) {
+      res.status(400).json({ erros: result.array() })
+      return
+    }
+    /// TODO Validar se existe livro com o livroId informado
+
+    const c = await livroService.createLivroInfo(req.body)
+    return res.status(201).json(c)
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function updateLivroInfo (req, res, next) {
+  try {
+    await check('livroId', 'LivroId deve ser informado').notEmpty()
+    await check('livroId', 'LivroId deve ser um número inteiro').isInt()
+
+    await check('descricao', 'A descrição deve ser uma string').optional().isString()
+    await check('paginas', 'LivroId deve ser um número inteiro').optional().isInt()
+    await check('editora', 'O nome da editora deve ser uma string').optional().isString()
+
+    const result = validationResult(req)
+
+    if (!result.isEmpty()) {
+      res.status(400).json({ erros: result.array() })
+      return
+    }
+    const c = await livroService.updateLivroInfo(req.body)
+    return res.status(200).json(c)
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function deleteLivroInfo (req, res, next) {
+  try {
+    await check('livroId', 'LivroId deve ser informado').notEmpty()
+    await check('livroId', 'LivroId deve ser um número inteiro').isInt()
+
+    const result = validationResult(req)
+
+    if (!result.isEmpty()) {
+      res.status(400).json({ erros: result.array() })
+      return
+    }
+
+    const id = parseInt(req.params.id)
+    const c = await livroService.deleteLivroInfo(id)
+    return res.status(200).send(c)
+  } catch (error) {
+    next(error)
+  }
+}
+export default {
+  createLivro,
+  updateLivro,
+  deleteLivro,
+  getLivros,
+  deleteLivroInfo,
+  getLivroByLivroId,
+  createLivroInfo,
+  updateLivroInfo
+}

@@ -1,3 +1,4 @@
+import livroInfoRepository from '../repositories/livro-info.repository.js'
 import livroRepository from '../repositories/livro.repository.js'
 
 async function createLivro (livro) {
@@ -22,4 +23,26 @@ async function getLivroByLivroId (livroId) {
 async function getLivrosByAutorId (autorId) {
   return await livroRepository.getLivrosByAutorId(autorId)
 }
-export default { createLivro, updateLivro, deleteLivro, getLivros, getLivroByLivroId, getLivrosByAutorId }
+
+async function createLivroInfo (livroInfo) {
+  return await livroInfoRepository.createLivroInfo(livroInfo)
+}
+
+async function updateLivroInfo (livroInfo) {
+  return await livroInfoRepository.updateLivroInfo(livroInfo)
+}
+
+async function deleteLivroInfo (livroId, index) {
+  return await livroInfoRepository.deleteLivroInfo(livroId, index)
+}
+export default {
+  createLivro,
+  updateLivro,
+  deleteLivro,
+  getLivros,
+  getLivroByLivroId,
+  getLivrosByAutorId,
+  createLivroInfo,
+  updateLivroInfo,
+  deleteLivroInfo
+}

@@ -9,4 +9,8 @@ router.delete('/:id', livrosController.deleteLivro)
 router.get('/', livrosController.getLivros)
 router.get('/:id', livrosController.getLivroByLivroId)
 
+router.post('/info', livrosController.createLivroInfo)
+router.put('/info', livrosController.updateLivroInfo)
+router.delete('/info/:id/', livrosController.deleteLivroInfo)
+
 export default router

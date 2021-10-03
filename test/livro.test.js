@@ -87,3 +87,112 @@ describe('/livro', () => {
     })
   })
 })
+
+describe('/livroInfo', () => {
+  test('POST - Criar LivroInfo', async () => {
+    const nome = 'Livro teste LivroInfo'
+    const autorId = 5
+    const payloadRequest1 = {
+      nome: nome,
+      valor: 24.50,
+      autorId: autorId,
+      estoque: 2
+    }
+    const res = await request.post('/livro')
+      .send(payloadRequest1)
+    expect(res.status).toBe(201)
+
+    const livroId = res.body.livroId
+
+    const payloadRequest2 = {
+      livroId,
+      descricao: 'Descrição do livro teste',
+      paginas: 42,
+      editora: 'Editora Teste'
+    }
+
+    const res2 = await request.post('/livro/info')
+      .send(payloadRequest2)
+
+    expect(res2.status).toBe(201)
+    expect(res2.body.livroId).toBe(livroId)
+    expect(res2.body.descricao).toBe(payloadRequest2.descricao)
+    expect(res2.body.paginas).toBe(payloadRequest2.paginas)
+    expect(JSON.stringify(res2.body.avaliacoes)).toBe(JSON.stringify([]))
+  })
+
+  test('PUT - Atualizar LivroInfo', async () => {
+    const nome = 'Livro teste LivroInfo PUT'
+    const autorId = 5
+    const payloadRequest1 = {
+      nome: nome,
+      valor: 24.52,
+      autorId: autorId,
+      estoque: 3
+    }
+    const res = await request.post('/livro')
+      .send(payloadRequest1)
+    expect(res.status).toBe(201)
+
+    const livroId = res.body.livroId
+
+    const payloadRequest2 = {
+      livroId,
+      descricao: 'Descrição do livro teste',
+      paginas: 42,
+      editora: 'Editora Teste'
+    }
+
+    const res2 = await request.post('/livro/info')
+      .send(payloadRequest2)
+    expect(res2.status).toBe(201)
+
+    const payloadRequest3 = {
+      livroId,
+      descricao: 'Atualiza a descrição do teste',
+      paginas: 51,
+      editora: 'Editora Teste Atualizado',
+      dumbfied: 'dumb'
+    }
+
+    const res3 = await request.put('/livro/info')
+      .send(payloadRequest3)
+    expect(res3.status).toBe(200)
+
+    expect(res3.body.livroId).toBe(livroId)
+    expect(res3.body.descricao).toBe(payloadRequest3.descricao)
+    expect(res3.body.paginas).toBe(payloadRequest3.paginas)
+    expect(res3.body.editora).toBe(payloadRequest3.editora)
+    expect(res3.body.dumbfield).toBe(undefined)
+  })
+
+  test('DELETE - Remover LivroInfo', async () => {
+    const nome = 'Livro teste LivroInfo delete'
+    const autorId = 5
+    const payloadRequest1 = {
+      nome: nome,
+      valor: 24.52,
+      autorId: autorId,
+      estoque: 3
+    }
+    const res = await request.post('/livro')
+      .send(payloadRequest1)
+    expect(res.status).toBe(201)
+
+    const livroId = res.body.livroId
+
+    const payloadRequest2 = {
+      livroId,
+      descricao: 'Descrição do livro teste',
+      paginas: 42,
+      editora: 'Editora Teste'
+    }
+
+    const res2 = await request.post('/livro/info')
+      .send(payloadRequest2)
+    expect(res2.status).toBe(201)
+
+    const res3 = await request.delete(`/livro/info/${livroId}`)
+    expect(res3.status).toBe(200)
+  })
+})
