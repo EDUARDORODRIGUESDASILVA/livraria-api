@@ -6,6 +6,10 @@ async function createLivro (livro) {
 
 async function updateLivro (livro) {
   const l = await Livro.findByPk(livro.livroId)
+
+  if (!l) {
+    throw new Error(`Livro ${livro.livroId} não localizado`)
+  }
   l.estoque = livro.estoque
   l.valor = livro.valor
   await l.save()

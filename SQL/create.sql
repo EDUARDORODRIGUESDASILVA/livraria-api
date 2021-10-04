@@ -39,6 +39,4 @@ CONSTRAINT fk_clientes FOREIGN KEY (cliente_id) REFERENCES clientes (cliente_id)
 CONSTRAINT fk_livros FOREIGN KEY (livro_id) REFERENCES livros (livro_id)
 );
 
-ERROR:  column "cliente_id" of relation "vendas" does not exist
-LINE 20: insert into vendas (valor, data, cliente_id, livro_id) value...
                                           ^

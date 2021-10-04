@@ -5,6 +5,17 @@ async function createLivro (livro) {
   return await livroRepository.createLivro(livro)
 }
 
+async function baixaEstoque (livroId, quantidade) {
+  const livro = await livroRepository.getLivroByLivroId(livroId)
+  if (!livro) {
+    throw new Error('Livro não encontrado')
+  }
+  if (livro.estoque < quantidade) {
+    throw new Error(`Estoque ${livro.estoque} inferior a quantidade necessária. ${quantidade} `)
+  }
+  livro.estoque = livro.estoque - quantidade
+  updateLivro(livro)
+}
 async function updateLivro (livro) {
   return await livroRepository.updateLivro(livro)
 }
@@ -61,5 +72,6 @@ export default {
   updateLivroInfo,
   deleteLivroInfo,
   createLivroAvaliacao,
-  deleteLivroAvaliacao
+  deleteLivroAvaliacao,
+  baixaEstoque
 }

@@ -5,6 +5,7 @@ import sync from './repositories/db.sync.js'
 import clientesRouter from './routes/clientes.routes.js'
 import autorRouter from './routes/autor.routes.js'
 import livrosRouter from './routes/livros.routes.js'
+import vendasRouter from './routes/vendas.routes.js'
 
 import { handleError } from './util/error.handler.js'
 
@@ -35,20 +36,7 @@ app.get('/', (req, res) => {
 app.use('/cliente', clientesRouter)
 app.use('/autor', autorRouter)
 app.use('/livro', livrosRouter)
-// app.use('/post', postsRouter);
-// app.use('/comentario', comentariosRouter);
-
-// app.use((err, req, res, next) => {
-//  console.log('eror 2')
-//  const { statusCode, message } = err;
-//  global.logger.error({ statusCode, message });
-//   res.status(statusCode).json({
-//     status: 'error',
-//     statusCode,
-//     message,
-//   });
-//  //x res.status(500).send("Ocorreu um erro, tente novamente mais tarde.");
-// });
+app.use('/venda', vendasRouter)
 
 app.use(handleError)
 
