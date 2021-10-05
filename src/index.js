@@ -8,6 +8,7 @@ import livrosRouter from './routes/livros.routes.js'
 import vendasRouter from './routes/vendas.routes.js'
 
 import { handleError } from './util/error.handler.js'
+import { basicAuth } from './util/auth.middleware.js'
 
 const app = express()
 
@@ -27,19 +28,26 @@ if (process.env.NODE_ENV !== 'production') {
   }))
 }
 
+// configura aplicação
 app.use(express.json())
 app.use(sync)
+
+// rotas públicas
 app.get('/', (req, res) => {
   res.send('Bootcamp IGTI: Desenvolvedor Node JS - Desafio Final. Bem vindo à livraria-api.')
 })
 
+// autenticação
+app.use(basicAuth)
+
+// rotas protegidas
 app.use('/cliente', clientesRouter)
 app.use('/autor', autorRouter)
 app.use('/livro', livrosRouter)
 app.use('/venda', vendasRouter)
 
+// gerenciamento de erros global
 app.use(handleError)
-
 app.use((err, req, res, next) => {
   res.status(500).json({
     status: 'error',
@@ -49,6 +57,7 @@ app.use((err, req, res, next) => {
   global.logger.error({ erro: JSON.stringify(err) })
 })
 
+// inicia a aplicação
 app.listen(3000, () => {
   global.logger.info('API Stared')
 })

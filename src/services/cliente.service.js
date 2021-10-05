@@ -32,7 +32,12 @@ async function getClienteByClienteId (clientId) {
   return clienteRepository.getClienteByClienteId(clientId)
 }
 
+async function authenticateCliente (email, password) {
+  return clienteRepository.getClienteByEmailAndPassword(email, password)
+}
+
 export default {
+  authenticateCliente,
   createCliente,
   updateCliente,
   deleteCliente,
