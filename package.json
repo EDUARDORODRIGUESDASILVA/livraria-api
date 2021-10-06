@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "start:watch": "nodemon src/index.js",
+    "reset:db": "node sql/reset.js",
     "lint": "eslint",
     "test": "jest"
   },

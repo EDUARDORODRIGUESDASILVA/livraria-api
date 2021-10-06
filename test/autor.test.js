@@ -1,8 +1,11 @@
 require('jest')
+const dotenv = require('dotenv')
+dotenv.config()
+
 const supertest = require('supertest')
 const request = supertest('http://localhost:3000')
 
-describe('/cliente', () => {
+describe.skip('/cliente', () => {
   test('POST - Criar um novo autor', async () => {
     const payloadRequest1 = {
       nome: 'Autor Teste 1',
@@ -10,6 +13,7 @@ describe('/cliente', () => {
       telefone: '99-99999-9999'
     }
     const res = await request.post('/autor')
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
     expect(res.body.nome).toBe(payloadRequest1.nome)
@@ -24,6 +28,7 @@ describe('/cliente', () => {
       telefone: '99-99999-9999'
     }
     const res = await request.post('/autor')
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
@@ -33,6 +38,7 @@ describe('/cliente', () => {
     payloadRequest1.telefone = '99-99999-9992'
 
     const res2 = await request.put('/autor')
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
 
     expect(res2.status).toBe(200)
@@ -48,17 +54,21 @@ describe('/cliente', () => {
       telefone: '99-99999-9999'
     }
     const res = await request.post('/autor')
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
       .send(payloadRequest1)
     expect(res.status).toBe(201)
 
     const id = res.body.autorId
     const res2 = await request.delete(`/autor/${id}`)
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
 
     expect(res2.status).toBe(200)
   })
 
   test('GET - Listar Autores', async () => {
     const res = await request.get('/autor')
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+
     expect(res.status).toBe(200)
     const autores = res.body
     autores.forEach(autor => {

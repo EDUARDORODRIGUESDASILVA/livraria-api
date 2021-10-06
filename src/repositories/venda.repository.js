@@ -47,7 +47,6 @@ async function getVendasByLivroId (livroId) {
         model: Cliente,
         attributes: { exclude: ['clienteId', 'senha'] }
       }
-
     ]
   })
 }
@@ -66,11 +65,20 @@ async function getVendasByAutorId (autorId) {
   })
 }
 
+async function deleteVendaByVendaId (vendaId) {
+  await Venda.destroy({
+    where: {
+      vendaId
+    }
+  })
+}
+
 export default {
   createVenda,
   getVendaByVendaId,
   getVendas,
   getVendasByClienteId,
   getVendasByLivroId,
-  getVendasByAutorId
+  getVendasByAutorId,
+  deleteVendaByVendaId
 }

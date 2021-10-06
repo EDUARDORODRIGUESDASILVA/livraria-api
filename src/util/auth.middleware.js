@@ -16,19 +16,18 @@ async function basicAuth (req, res, next) {
 
   if (isAdmin) {
     global.logger.info('Logged as admin')
-    req.user = { isAdmin }
+    req.user = { role: 'admin' }
     return next()
   }
 
   const user = JSON.parse(JSON.stringify(await clienteService.authenticateCliente(username, password)))
-  console.log('user', user)
   if (!user) {
-    user.isAdmin = false
     global.logger.info(`Invalid Authentication as ${username}`)
     return res.status(401).json({ message: 'Invalid Authentication Credencials' })
   }
 
   req.user = user
+  user.role = 'customer1'
   return next()
 }
 
@@ -42,4 +41,21 @@ function authAdmin (username, password) {
   return false
 }
 
-export { basicAuth }
+function authorize (...allowed) {
+  const isAllowed = role => allowed.indexOf(role) > -1
+
+  return (req, res, next) => {
+    if (req.user) {
+      const role = req.user.role
+      if (isAllowed(role)) {
+        next()
+      } else {
+        res.status(401).json({ error: `Role ${role} not allowed` })
+      }
+    } else {
+      res.status(403).json({ error: 'User not found' })
+    }
+  }
+}
+
+export { basicAuth, authorize }

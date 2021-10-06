@@ -1,7 +1,12 @@
 import clienteRepository from '../repositories/cliente.repository.js'
+import { ErrorHandler } from '../util/error.handler.js'
 
 async function createCliente (cliente) {
-  // TODO BLOQUEAR INSERT CASO O CLIENTE JÁ TENHA UMA CONTA CADASTRADA COM O MESMO EMAIL
+  const v = await clienteRepository.getClienteByEmail(cliente.email)
+
+  if (v) {
+    throw new ErrorHandler(401, ` Já existe uma conta para o email ${cliente.email}`)
+  }
 
   const c = await clienteRepository.createCliente(cliente)
   // converte para o raw object e remove a senha por segurança

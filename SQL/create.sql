@@ -38,5 +38,3 @@ livro_id INT NOT NULL,
 CONSTRAINT fk_clientes FOREIGN KEY (cliente_id) REFERENCES clientes (cliente_id),
 CONSTRAINT fk_livros FOREIGN KEY (livro_id) REFERENCES livros (livro_id)
 );
-
-                                          ^
