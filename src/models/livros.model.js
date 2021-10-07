@@ -31,7 +31,7 @@ const Livro = db.define(
   { underscored: true }
 )
 
-Livro.belongsTo(Autor, { foreignKey: 'autor_id' })
+Livro.belongsTo(Autor, { foreignKey: 'autor_id', onDelete: 'CASCADE' })
 // Livro.hasOne(Autor)
 
 export default Livro

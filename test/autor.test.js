@@ -1,8 +1,7 @@
-require('jest')
-const dotenv = require('dotenv')
-dotenv.config()
+import dotenv from 'dotenv'
+import supertest from 'supertest'
 
-const supertest = require('supertest')
+dotenv.config()
 const request = supertest('http://localhost:3000')
 
 describe.skip('/cliente', () => {

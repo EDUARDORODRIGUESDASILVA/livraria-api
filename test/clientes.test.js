@@ -1,6 +1,6 @@
-require('jest')
-const dotenv = require('dotenv')
-const supertest = require('supertest')
+import dotenv from 'dotenv'
+import supertest from 'supertest'
+
 const request = supertest('http://localhost:3000')
 
 dotenv.config()

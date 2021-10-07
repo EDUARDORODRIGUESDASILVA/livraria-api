@@ -1,12 +1,13 @@
-require('jest')
-const dotenv = require('dotenv')
-const supertest = require('supertest')
+import dotenv from 'dotenv'
+import supertest from 'supertest'
+
 const request = supertest('http://localhost:3000')
 
 dotenv.config()
 let autor = null
 let livro = null
 let customer = null
+const email = 'teste@gmail.com'
 const senha = 'senhadetestes'
 let venda = null
 
@@ -67,9 +68,12 @@ describe('Admin Testes de integração', () => {
   })
 
   test('5 - Criar um cliente com dados de teste', async () => {
+    const res0 = await request.delete(`/cliente/email/${email}`)
+      .auth(process.env.ROOT_USER, process.env.ROOT_PASS)
+    expect(res0.status).toBe(200)
     const payloadRequest1 = {
       nome: 'Cliente Teste 1',
-      email: 'teste@gmail.com',
+      email,
       senha,
       telefone: '99-99999-9999',
       endereco: 'Rua dos Bobos, nº 0'
@@ -83,6 +87,7 @@ describe('Admin Testes de integração', () => {
     expect(res.body.senha).toBe(undefined)
     expect(res.body.telefone).toBe(payloadRequest1.telefone)
     expect(res.body.endereco).toBe(payloadRequest1.endereco)
+
     customer = res.body
   })
 
@@ -121,9 +126,9 @@ describe('Com Login criado', () => {
       .auth(customer.email, senha)
       .send(payloadRequest2)
     expect(res2.status).toBe(201)
-    console.log(res2)
-    expect(res2.clientId).toBe(payloadRequest2.clientId)
-    expect(res2.livroId).toBe(payloadRequest2.livroId)
+
+    expect(res2.body.clientId).toBe(payloadRequest2.clientId)
+    expect(res2.body.livroId).toBe(payloadRequest2.livroId)
     expect(res2.body.vendaId).toBeDefined()
     venda = res2.body
   })
@@ -135,7 +140,7 @@ describe('Com Login criado', () => {
     expect(res.status).toBe(200)
     expect(res.body.vendaId).toBe(vendaId)
     expect(res.body.livroId).toBe(livro.livroId)
-    expect(res.body.clientId).toBe(customer.clienteId)
+    expect(res.body.clienteId).toBe(customer.clienteId)
     expect(res.body.valor).toBeDefined()
   })
 })

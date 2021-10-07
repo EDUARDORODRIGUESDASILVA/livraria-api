@@ -1,11 +1,12 @@
 import clienteRepository from '../repositories/cliente.repository.js'
+import vendaRepository from '../repositories/venda.repository.js'
 import { ErrorHandler } from '../util/error.handler.js'
 
 async function createCliente (cliente) {
   const v = await clienteRepository.getClienteByEmail(cliente.email)
 
   if (v) {
-    throw new ErrorHandler(401, ` Já existe uma conta para o email ${cliente.email}`)
+    throw new ErrorHandler(403, ` Já existe uma conta para o email ${cliente.email}`)
   }
 
   const c = await clienteRepository.createCliente(cliente)
@@ -41,11 +42,21 @@ async function authenticateCliente (email, password) {
   return clienteRepository.getClienteByEmailAndPassword(email, password)
 }
 
+async function deleteClienteByEmail (email) {
+  const c = JSON.stringify(await clienteRepository.getClienteByEmail(email))
+  const cliente = JSON.parse(c)
+  if (cliente) {
+    await vendaRepository.deleteVendaByClienteId(cliente.clienteId)
+    const d = await clienteRepository.deleteClienteByClienteId(cliente.clienteId)
+    return d
+  }
+}
 export default {
   authenticateCliente,
   createCliente,
   updateCliente,
   deleteCliente,
   getClientes,
-  getClienteByClienteId
+  getClienteByClienteId,
+  deleteClienteByEmail
 }

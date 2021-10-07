@@ -44,7 +44,8 @@ async function getClienteByEmail (email) {
   return await Cliente.findOne({
     where: {
       email
-    }
+    },
+    raw: true
   })
 }
 
@@ -56,6 +57,14 @@ async function getClienteByEmailAndPassword (email, password) {
     }
   })
 }
+
+async function deleteClienteByClienteId (clienteId) {
+  await Cliente.destroy({
+    where: {
+      clienteId
+    }
+  })
+}
 export default {
   createCliente,
   updateCliente,
@@ -63,5 +72,6 @@ export default {
   getClientes,
   getClienteByClienteId,
   getClienteByEmailAndPassword,
-  getClienteByEmail
+  getClienteByEmail,
+  deleteClienteByClienteId
 }

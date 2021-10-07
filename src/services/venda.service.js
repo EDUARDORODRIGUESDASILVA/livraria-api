@@ -53,6 +53,10 @@ async function getVendasByLivroId (livroId) {
 async function deleteVendaByVendaId (vendaId) {
   return await vendaRepository.deleteVendaByVendaId(vendaId)
 }
+
+async function deleteVendaByClienteId (clienteId) {
+  return await vendaRepository.deleteVendaByClienteId(clienteId)
+}
 export default {
   createVenda,
   getVendaByVendaId,
@@ -60,5 +64,6 @@ export default {
   getVendasByAutorId,
   getVendasByClienteId,
   getVendasByLivroId,
-  deleteVendaByVendaId
+  deleteVendaByVendaId,
+  deleteVendaByClienteId
 }

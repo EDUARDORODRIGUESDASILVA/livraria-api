@@ -73,6 +73,14 @@ async function deleteVendaByVendaId (vendaId) {
   })
 }
 
+async function deleteVendaByClienteId (clienteId) {
+  await Venda.destroy({
+    where: {
+      clienteId
+    }
+  })
+}
+
 export default {
   createVenda,
   getVendaByVendaId,
@@ -80,5 +88,6 @@ export default {
   getVendasByClienteId,
   getVendasByLivroId,
   getVendasByAutorId,
-  deleteVendaByVendaId
+  deleteVendaByVendaId,
+  deleteVendaByClienteId
 }

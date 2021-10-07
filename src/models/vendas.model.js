@@ -31,10 +31,10 @@ const Venda = db.define(
   },
   { underscored: true }
 )
-Venda.belongsTo(Cliente, { foreignKey: 'cliente_id' })
+Venda.belongsTo(Cliente, { foreignKey: 'cliente_id', onDelete: 'CASCADE' })
 // Venda.hasOne(Cliente)
 
-Venda.belongsTo(Livro, { foreignKey: 'livro_id' })
+Venda.belongsTo(Livro, { foreignKey: 'livro_id', onDelete: 'CASCADE' })
 // Venda.hasOne(Livro)
 
 export default Venda

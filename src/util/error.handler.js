@@ -7,7 +7,6 @@ class ErrorHandler extends Error {
 }
 
 function handleError (err, req, res, next) {
-  console.log('eror 3', err)
   const { statusCode, message } = err
   global.logger.error({ statusCode, message })
   res.status(statusCode).json({

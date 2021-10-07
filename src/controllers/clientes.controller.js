@@ -94,10 +94,27 @@ async function getClientByClientId (req, res, next) {
   }
 }
 
+async function deleteClienteByEmail (req, res, next) {
+  try {
+    const email = req.params.email
+
+    if (!email) {
+      throw new ErrorHandler(400, 'Missing required email')
+    }
+
+    const c = await clientService.deleteClienteByEmail(email)
+    return res.status(200).send(c)
+    // throw new ErrorHandler(501, 'Endpoint not implemented')
+  } catch (error) {
+    next(error)
+  }
+}
+
 export default {
   createCliente,
   updateCliente,
   deleteCliente,
   getClientes,
-  getClientByClientId
+  getClientByClientId,
+  deleteClienteByEmail
 }
