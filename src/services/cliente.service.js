@@ -27,6 +27,10 @@ async function updateCliente (cliente) {
 }
 
 async function deleteCliente (id) {
+  const vendas = await vendaRepository.getVendasByClienteId(id)
+  if (vendas.length > 0) {
+    throw new ErrorHandler(403, `Cliente ${id} possui vendas`)
+  }
   return await clienteRepository.deleteCliente(id)
 }
 
@@ -42,21 +46,20 @@ async function authenticateCliente (email, password) {
   return clienteRepository.getClienteByEmailAndPassword(email, password)
 }
 
-async function deleteClienteByEmail (email) {
-  const c = JSON.stringify(await clienteRepository.getClienteByEmail(email))
-  const cliente = JSON.parse(c)
-  if (cliente) {
-    await vendaRepository.deleteVendaByClienteId(cliente.clienteId)
-    const d = await clienteRepository.deleteClienteByClienteId(cliente.clienteId)
-    return d
-  }
-}
+// async function deleteClienteByEmail (email) {
+//   const c = JSON.stringify(await clienteRepository.getClienteByEmail(email))
+//   const cliente = JSON.parse(c)
+//   if (cliente) {
+//     await vendaRepository.deleteVendaByClienteId(cliente.clienteId)
+//     const d = await clienteRepository.deleteClienteByClienteId(cliente.clienteId)
+//     return d
+//   }
+// }
 export default {
   authenticateCliente,
   createCliente,
   updateCliente,
   deleteCliente,
   getClientes,
-  getClienteByClienteId,
-  deleteClienteByEmail
+  getClienteByClienteId
 }

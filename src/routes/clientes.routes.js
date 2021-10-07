@@ -7,7 +7,7 @@ router.post('/', authorize('admin'), clientesController.createCliente)
 router.put('/', authorize('admin'), clientesController.updateCliente)
 router.delete('/:id', authorize('admin'), clientesController.deleteCliente)
 router.get('/', authorize('admin'), clientesController.getClientes)
-router.delete('/email/:email', authorize('admin'), clientesController.deleteClienteByEmail)
+// router.delete('/email/:email', authorize('admin'), clientesController.deleteClienteByEmail)
 router.get('/:id', authorize('admin'), clientesController.getClientByClientId)
 
 export default router

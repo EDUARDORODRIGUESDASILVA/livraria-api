@@ -1,7 +1,18 @@
 import livroInfoRepository from '../repositories/livro-info.repository.js'
 import livroRepository from '../repositories/livro.repository.js'
+import autorRepository from '../repositories/autor.repository.js'
+import vendaRepository from '../repositories/venda.repository.js'
+import { ErrorHandler } from '../util/error.handler.js'
 
 async function createLivro (livro) {
+  const autor = await autorRepository.getAutorByAutorId(livro.autorId)
+  if (!autor) {
+    throw new ErrorHandler(403, `Autor ${livro.autorId} não cadastrado`)
+  }
+
+  if (livro.estoque < 0) {
+    throw new ErrorHandler(403, 'O estoque não pode ser negativo')
+  }
   return await livroRepository.createLivro(livro)
 }
 
@@ -20,6 +31,10 @@ async function updateLivro (livro) {
   return await livroRepository.updateLivro(livro)
 }
 async function deleteLivro (livroId) {
+  const vendas = await vendaRepository.getVendasByLivroId(livroId)
+  if (vendas.length > 0) {
+    throw new ErrorHandler(403, ` Ja existem vendas para o livro ${livroId}`)
+  }
   return await livroRepository.deleteLivro(livroId)
 }
 
